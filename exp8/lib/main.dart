@@ -20,6 +20,83 @@ class FitnessTrackerApp extends StatelessWidget {
   }
 }
 
+// Drawer Widget
+class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const UserAccountsDrawerHeader(
+            accountName: Text("John Doe"),
+            accountEmail: Text("john@example.com"),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, size: 40, color: Colors.green),
+            ),
+            decoration: BoxDecoration(color: Colors.green),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text("Home"),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomeSlide()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.show_chart),
+            title: const Text("Daily Stats"),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const StatsSlide(
+                        steps: 7500, calories: 450, water: 5)),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.fitness_center),
+            title: const Text("Workout Plans"),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const WorkoutSlide()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text("Profile"),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfileSlide()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text("Settings"),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsSlide()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // Slide 1: Home
 class HomeSlide extends StatelessWidget {
   const HomeSlide({super.key});
@@ -27,6 +104,7 @@ class HomeSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(title: const Text('Fitness Tracker')),
       body: Center(
         child: Column(
@@ -37,15 +115,16 @@ class HomeSlide extends StatelessWidget {
               label: const Text('View Daily Stats'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const StatsSlide(steps: 7500, calories: 450, water: 5)),
+                      builder: (context) => const StatsSlide(
+                          steps: 7500, calories: 450, water: 5)),
                 );
               },
             ),
@@ -55,7 +134,8 @@ class HomeSlide extends StatelessWidget {
               label: const Text('Workout Plans'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
               ),
               onPressed: () {
@@ -78,15 +158,17 @@ class StatsSlide extends StatelessWidget {
   final int calories;
   final int water;
 
-  const StatsSlide({super.key, this.steps = 0, this.calories = 0, this.water = 0});
+  const StatsSlide(
+      {super.key, this.steps = 0, this.calories = 0, this.water = 0});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(title: const Text('Daily Stats')),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        child: ListView(
           children: [
             StatCard(
               icon: Icons.directions_walk,
@@ -94,6 +176,9 @@ class StatsSlide extends StatelessWidget {
               value: steps,
               goal: 10000,
               color: Colors.blue,
+              gradient: const LinearGradient(
+                colors: [Colors.blue, Colors.lightBlueAccent],
+              ),
             ),
             const SizedBox(height: 20),
             StatCard(
@@ -102,6 +187,9 @@ class StatsSlide extends StatelessWidget {
               value: calories,
               goal: 600,
               color: Colors.red,
+              gradient: const LinearGradient(
+                colors: [Colors.red, Colors.orange],
+              ),
             ),
             const SizedBox(height: 20),
             StatCard(
@@ -111,19 +199,9 @@ class StatsSlide extends StatelessWidget {
               goal: 8,
               color: Colors.teal,
               unit: 'glasses',
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.arrow_back),
-              label: const Text('Back'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[700],
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                textStyle: const TextStyle(fontSize: 16),
+              gradient: const LinearGradient(
+                colors: [Colors.teal, Colors.cyan],
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
             ),
           ],
         ),
@@ -132,7 +210,7 @@ class StatsSlide extends StatelessWidget {
   }
 }
 
-// Reusable Stat Card Widget
+// Reusable Stat Card Widget with Gradient
 class StatCard extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -140,6 +218,7 @@ class StatCard extends StatelessWidget {
   final int goal;
   final Color color;
   final String unit;
+  final Gradient? gradient;
 
   const StatCard(
       {super.key,
@@ -148,21 +227,25 @@ class StatCard extends StatelessWidget {
       required this.value,
       required this.goal,
       required this.color,
-      this.unit = ''});
+      this.unit = '',
+      this.gradient});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 5,
-      shadowColor: color.withOpacity(0.5),
-      child: Padding(
+      elevation: 6,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(15),
+        ),
         padding: const EdgeInsets.all(15.0),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 25,
-              backgroundColor: color.withOpacity(0.2),
+              radius: 30,
+              backgroundColor: Colors.white.withOpacity(0.8),
               child: Icon(icon, color: color, size: 30),
             ),
             const SizedBox(width: 20),
@@ -170,15 +253,18 @@ class StatCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(label, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(label,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   LinearPercentIndicator(
-                    lineHeight: 18.0,
+                    lineHeight: 20.0,
                     percent: (value / goal).clamp(0.0, 1.0),
                     center: Text('$value / $goal $unit',
-                        style: const TextStyle(fontSize: 14, color: Colors.black87)),
-                    progressColor: color,
-                    backgroundColor: Colors.grey[300]!,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.white)),
+                    progressColor: Colors.white,
+                    backgroundColor: Colors.black26,
                     animation: true,
                     animationDuration: 1000,
                     barRadius: const Radius.circular(10),
@@ -220,33 +306,66 @@ class _WorkoutSlideState extends State<WorkoutSlide> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(title: const Text('Workout Plans')),
       body: ListView.builder(
         padding: const EdgeInsets.all(20.0),
         itemCount: workouts.length,
         itemBuilder: (context, index) {
           return Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 3,
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: CheckboxListTile(
-              title: Text(workouts[index], style: const TextStyle(fontSize: 18)),
+              title: Text(workouts[index],
+                  style: const TextStyle(fontSize: 18)),
               value: completed[index],
               onChanged: (val) {
                 setState(() {
                   completed[index] = val!;
                 });
               },
-              secondary: const Icon(Icons.fitness_center, color: Colors.green),
+              secondary:
+                  const Icon(Icons.fitness_center, color: Colors.green),
               controlAffinity: ListTileControlAffinity.trailing,
             ),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey[800],
-        child: const Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pop(context),
+    );
+  }
+}
+
+// Slide 4: Profile
+class ProfileSlide extends StatelessWidget {
+  const ProfileSlide({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const AppDrawer(),
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(
+        child: Text("User Profile Page",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+}
+
+// Slide 5: Settings
+class SettingsSlide extends StatelessWidget {
+  const SettingsSlide({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const AppDrawer(),
+      appBar: AppBar(title: const Text('Settings')),
+      body: const Center(
+        child: Text("Settings Page",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
       ),
     );
   }
