@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "813569614547",
+    "project_id": "calculator-1e662",
+    "storage_bucket": "calculator-1e662.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813569614547:android:a15b25030f5ba69eefaa26",
+        "android_client_info": {
+          "package_name": "com.example.calculator_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnIbhgGg1dbqnOeYNtqU0pLy_oujK7uEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813569614547:android:20136917a46a79e4efaa26",
+        "android_client_info": {
+          "package_name": "com.rishab.calculator_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnIbhgGg1dbqnOeYNtqU0pLy_oujK7uEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
