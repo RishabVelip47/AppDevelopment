@@ -30,9 +30,27 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
           const SizedBox(height: 10),
           ElevatedButton(
               onPressed: () async {
-                await _auth.signInWithPhone(phoneController.text, (verId) {
-                  setState(() => verificationId = verId);
-                });
+                if (!mounted) return;
+                try {
+                  await _auth.signInWithPhone(phoneController.text, (verId) {
+                    setState(() => verificationId = verId);
+                  });
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('OTP sent successfully'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } catch (e) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.toString().replaceAll('Exception: ', '')),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               child: const Text("Send OTP")),
           if (verificationId != null) ...[
@@ -44,12 +62,21 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
             const SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () async {
-                  await _auth.verifyOTP(verificationId!, otpController.text);
-                  if (mounted) {
-                    Navigator.pushReplacement(
-                        context,
+                  if (!mounted) return;
+                  try {
+                    await _auth.verifyOTP(verificationId!, otpController.text);
+                    if (!mounted) return;
+                    Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                             builder: (_) => const DashboardPage()));
+                  } catch (e) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString().replaceAll('Exception: ', '')),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 },
                 child: const Text("Verify & Login")),

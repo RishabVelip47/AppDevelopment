@@ -58,6 +58,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
 
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+
     // Unit Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

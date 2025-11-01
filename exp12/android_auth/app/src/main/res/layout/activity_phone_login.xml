@@ -1,32 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
-    android:background="@color/white"
-    tools:context=".PhoneLoginActivity">
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone Login Screen"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_marginBottom="24dp" />
-
-    <Button
-        android:id="@+id/btnPhoneSignIn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login with Phone Number"
-        android:backgroundTint="@color/purple_500"
-        android:textColor="@color/white"
-        android:padding="12dp" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        tools:context=".PhoneLoginActivity">
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Verification"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            app:prefixText="+91 ">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPhoneNumber"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutVerificationCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Verification Code"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputVerificationCode"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnSendCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Verification Code"
+            android:layout_marginTop="24dp"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:id="@+id/btnVerifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify Code"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:id="@+id/btnResendCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resend Code"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+    </LinearLayout>
+</ScrollView>

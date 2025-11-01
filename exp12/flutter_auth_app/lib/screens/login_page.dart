@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -57,19 +57,32 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 30),
                   TextField(
                     controller: emailController,
-                    decoration: const InputDecoration(
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
                       labelText: "Email",
-                      prefixIcon: Icon(Icons.email, color: Colors.tealAccent),
+                      labelStyle: const TextStyle(color: Colors.white70),
+                      prefixIcon: const Icon(Icons.email, color: Colors.tealAccent),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.tealAccent),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   TextField(
                     controller: passwordController,
                     obscureText: !showPassword,
+                    keyboardType: TextInputType.visiblePassword,
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: "Password",
-                      prefixIcon:
-                          const Icon(Icons.lock, color: Colors.tealAccent),
+                      labelStyle: const TextStyle(color: Colors.white70),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.tealAccent),
                       suffixIcon: IconButton(
                         icon: Icon(
                           showPassword
@@ -80,6 +93,14 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           setState(() => showPassword = !showPassword);
                         },
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.tealAccent),
                       ),
                     ),
                   ),
@@ -94,18 +115,27 @@ class _LoginPageState extends State<LoginPage> {
                       minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () async {
-                      if (isLogin) {
-                        await _auth.login(
-                            emailController.text, passwordController.text);
-                      } else {
-                        await _auth.signUp(
-                            emailController.text, passwordController.text);
-                      }
-                      if (mounted) {
-                        Navigator.pushReplacement(
-                            context,
+                      if (!mounted) return;
+                      try {
+                        if (isLogin) {
+                          await _auth.login(
+                              emailController.text.trim(), passwordController.text.trim());
+                        } else {
+                          await _auth.signUp(
+                              emailController.text.trim(), passwordController.text.trim());
+                        }
+                        if (!mounted) return;
+                        Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                                 builder: (_) => const DashboardPage()));
+                      } catch (e) {
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString().replaceAll('Exception: ', '')),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     child: Text(isLogin ? "Login" : "Sign Up"),
@@ -132,12 +162,21 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     icon: const Icon(Icons.login),
                     onPressed: () async {
-                      await _auth.signInWithGoogle();
-                      if (mounted) {
-                        Navigator.pushReplacement(
-                            context,
+                      if (!mounted) return;
+                      try {
+                        await _auth.signInWithGoogle();
+                        if (!mounted) return;
+                        Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                                 builder: (_) => const DashboardPage()));
+                      } catch (e) {
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString().replaceAll('Exception: ', '')),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     label: const Text("Sign in with Google"),

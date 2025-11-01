@@ -45,12 +45,12 @@ class _SignupPageState extends State<SignupPage> {
             const SizedBox(height: 25),
             ElevatedButton(
                 onPressed: () async {
+                  if (!mounted) return;
                   await _auth.signUp(
                       emailController.text.trim(), passwordController.text.trim());
-                  if (mounted) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) => const LoginPage()));
-                  }
+                  if (!mounted) return;
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => const LoginPage()));
                 },
                 child: const Text("Sign Up"))
           ],

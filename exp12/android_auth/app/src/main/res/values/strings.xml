@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">android_auth</string>
+    <string name="default_web_client_id">514154718737-1e8c6074r4j3bnq2ibeos9p0u3212u48.apps.googleusercontent.com</string>
 </resources>

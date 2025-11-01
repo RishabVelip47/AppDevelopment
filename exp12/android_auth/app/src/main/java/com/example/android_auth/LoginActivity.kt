@@ -40,13 +40,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnGoogle.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            startActivity(Intent(this, GoogleLoginActivity::class.java))
         }
 
         binding.btnPhone.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            startActivity(Intent(this, PhoneLoginActivity::class.java))
         }
     }
 }
